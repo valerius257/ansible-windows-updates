@@ -1,0 +1,6 @@
+---
+- import_tasks: win_updates.yml
+- import_tasks: win_hotfixes.yml
+
+- name: run all notified handlers
+  meta: flush_handlers

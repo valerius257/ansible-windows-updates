@@ -1,0 +1,18 @@
+---
+windows_update_allowed: true
+windows_reboot_allowed: true
+
+WINDOWS_UPDATE_OTHER_MS_PRODUCTS: false
+WINDOWS_UPDATE_CATEGORIES:
+  - CriticalUpdates
+  - SecurityUpdates
+  - DefinitionUpdates
+  - UpdateRollups
+  - Updates
+  - ServicePacks
+  - FeaturePacks
+
+# List of hotfixes in MSU format which are not installed via Windows Update but required for other programs to work.
+# This hotfixes cannot be installed via chocolatey because interactive console is required for instalation via chocolatey.
+# Provide URL and name as parametrs, example below
+WINDOWS_HOTFIXES: []

@@ -1,0 +1,23 @@
+---
+- name: download hotfixes
+  win_get_url:
+    url: "{{ item.url }}"
+    dest: "C:\\Windows\\Temp\\{{ item.name }}.msu"
+    timeout: 60
+    force: no
+  with_items: "{{ WINDOWS_HOTFIXES }}"
+
+- name: install hotfixes
+  win_hotfix:
+    source: "C:\\Windows\\Temp\\{{ item.name }}.msu"
+    state: present
+  with_items: "{{ WINDOWS_HOTFIXES }}"
+  register: hotfix_result
+
+- name: check if reboot required
+  debug:
+    msg: "windows reboot was triggered by {{ item.item.name }}"
+  when: item.reboot_required
+  changed_when: item.reboot_required
+  with_items: "{{ hotfix_result.results }}"
+  notify: reboot windows
