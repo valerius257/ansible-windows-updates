@@ -14,6 +14,8 @@
   win_updates:
     category_names: "{{ WINDOWS_UPDATE_CATEGORIES }}"
     state: installed
+    reboot: "{{ windows_reboot_allowed }}"
+    reboot_timeout: 9000
   when: windows_update_allowed
   register: win_update_result
   changed_when:
@@ -22,15 +24,3 @@
   failed_when:
     - win_update_result.failed_update_count is defined
     - win_update_result.failed_update_count > 0
-
-- name: check if reboot required
-  debug:
-    msg: windows reboot was triggered by updates
-  when:
-    - win_update_result.reboot_required is defined
-    - win_update_result.reboot_required
-  changed_when: win_update_result.reboot_required
-  notify: reboot windows
-
-- name: run all notified handlers
-  meta: flush_handlers
